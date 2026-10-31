@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+<html lang="ky">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GLOW BEAUTY | Косметика дүкөнү</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#fff8fa;color:#442b36}
+header{background:#fff;padding:18px 7%;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 12px #eacbd5;position:sticky;top:0;z-index:10}
+.logo{font-size:25px;font-weight:bold;color:#c6537c}
+nav a{margin-left:18px;text-decoration:none;color:#63394b;font-weight:bold}
+.hero{padding:65px 8%;background:linear-gradient(110deg,#f9dce7,#fff0f5);display:flex;align-items:center;justify-content:space-between;gap:25px;flex-wrap:wrap}
+.hero h1{font-size:43px;color:#a83f69;margin-bottom:15px}
+.hero p{font-size:17px;margin-bottom:25px}
+.btn{background:#c6537c;color:white;border:0;padding:13px 24px;border-radius:25px;cursor:pointer;text-decoration:none}
+.hero img{width:300px;height:300px;object-fit:cover;border-radius:50%}
+h2{text-align:center;margin:40px 0 25px;color:#a83f69}
+.categories{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;padding:10px}
+.categories button{border:1px solid #d98aa7;background:white;padding:10px 19px;border-radius:20px;cursor:pointer;color:#a83f69}
+.search{text-align:center;margin:25px}
+.search input{padding:13px;width:80%;max-width:400px;border:1px solid #e4a7bc;border-radius:25px}
+.products{padding:10px 6%;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:22px}
+.card{background:white;border-radius:16px;overflow:hidden;box-shadow:0 4px 15px #edd5de;text-align:center;padding-bottom:18px}
+.card img{width:100%;height:220px;object-fit:cover}
+.card h3{margin:12px}
+.price{color:#c6537c;font-weight:bold;margin:10px}
+.card button{margin-top:8px}
+.cart{margin:35px 6%;padding:25px;background:#f9e4ec;border-radius:18px}
+.cart p{margin:12px 0}
+.cart button{margin-top:10px}
+footer{text-align:center;background:#542d40;color:white;padding:30px;margin-top:40px}
+@media(max-width:600px){
+header{flex-direction:column;gap:12px}
+nav a{margin:5px;font-size:13px}
+.hero h1{font-size:32px}
+.hero img{width:220px;height:220px}
+}
+</style>
+</head>
+<body>
+
+<header>
+<div class="logo">💗 GLOW BEAUTY</div>
+<nav>
+<a href="#home">Башкы бет</a>
+<a href="#products">Товарлар</a>
+<a href="#cart">Себет 🛒</a>
+</nav>
+</header>
+
+<section class="hero" id="home">
+<div>
+<h1>Сулуулугуңду ач! 💄</h1>
+<p>Сен үчүн эң мыкты косметика бир жерде.<br>Сапаттуу косметика — жеткиликтүү баада!</p>
+<a href="#products" class="btn">Азыр сатып алуу</a>
+</div>
+<img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600" alt="Косметика">
+</section>
+
+<h2>🌸 Категориялар</h2>
+<div class="categories">
+<button onclick="filter('Баары')">Баары</button>
+<button onclick="filter('Помада')">Помада</button>
+<button onclick="filter('Бетке кам көрүү')">Бетке кам көрүү</button>
+<button onclick="filter('Макияж')">Макияж</button>
+<button onclick="filter('Парфюм')">Парфюм</button>
+</div>
+
+<div class="search">
+<input id="search" placeholder="🔍 Товар издөө..." oninput="render()">
+</div>
+
+<h2 id="products">💋 Биздин товарлар</h2>
+<div class="products" id="list"></div>
+
+<section class="cart" id="cart">
+<h2>🛒 Менин себетим</h2>
+<div id="cartItems">Азырынча товар жок</div>
+<p><b>Жалпы сумма: <span id="total">0</span> сом</b></p>
+<button class="btn" onclick="order()">Заказ берүү</button>
+</section>
+
+<footer>
+<h2 style="color:white">GLOW BEAUTY 💗</h2>
+<p>Сулуулук ар бир кызга жарашат!</p>
+<p>Instagram: @glowbeauty</p>
+<p>© 2026 GLOW BEAUTY</p>
+</footer>
+
+<script>
+const products=[
+{name:"Кызгылт помада",cat:"Помада",price:450,img:"https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=500"},
+{name:"Тоналдык крем",cat:"Макияж",price:850,img:"https://images.unsplash.com/photo-1631214524020-7e18db9a8f92?w=500"},
+{name:"Бетке крем",cat:"Бетке кам көрүү",price:650,img:"https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=500"},
+{name:"Кирпик тушу",cat:"Макияж",price:500,img:"https://images.unsplash.com/photo-1631214540553-ff044a5d0e7b?w=500"},
+{name:"Атыр",cat:"Парфюм",price:1200,img:"https://images.unsplash.com/photo-1541643600914-78b084683601?w=500"},
+{name:"Эрин жылтырагы",cat:"Помада",price:350,img:"https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?w=500"},
+{name:"Бет маскасы",cat:"Бетке кам көрүү",price:400,img:"https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=500"},
+{name:"Макияж топтому",cat:"Макияж",price:1500,img:"https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500"}
+];
+
+let cart=[];
+let category="Баары";
+
+function filter(c){
+category=c;
+render();
+}
+
+function render(){
+let q=document.getElementById("search").value.toLowerCase();
+let items=products.filter(p=>
+(category==="Баары"||p.cat===category)&&p.name.toLowerCase().includes(q)
+);
+document.getElementById("list").innerHTML=items.map(p=>`
+<div class="card">
+<img src="${p.img}" alt="${p.name}" onerror="this.src='https://placehold.co/400x300/f9dce7/9e4267?text=GLOW+BEAUTY'">
+<h3>${p.name}</h3>
+<p>${p.cat}</p>
+<div class="price">${p.price} сом</div>
+<button class="btn" onclick="add('${p.name}')">Себетке кошуу</button>
+</div>`).join("");
+}
+
+function add(name){
+let p=products.find(x=>x.name===name);
+cart.push(p);
+updateCart();
+}
+
+function updateCart(){
+document.getElementById("cartItems").innerHTML=cart.length?
+cart.map((p,i)=>`
+<p>${p.name} — ${p.price} сом
+<button onclick="removeItem(${i})">❌</button></p>
+`).join(""):"Азырынча товар жок";
+document.getElementById("total").innerText=
+cart.reduce((s,p)=>s+p.price,0);
+}
+
+function removeItem(i){
+cart.splice(i,1);
+updateCart();
+}
+
+function order(){
+if(!cart.length){alert("Себет бош!");return;}
+let name=prompt("Атыңызды жазыңыз:");
+if(!name)return;
+let phone=prompt("Телефон номериңизди жазыңыз:");
+if(!phone)return;
+let items=cart.map(p=>p.name+" - "+p.price+" сом").join("%0A");
+let total=cart.reduce((s,p)=>s+p.price,0);
+let message=`Саламатсызбы! GLOW BEAUTY заказ.%0AАты: ${encodeURIComponent(name)}%0AТелефон: ${encodeURIComponent(phone)}%0AТоварлар:%0A${items}%0AЖалпы: ${total} сом`;
+window.open("https://wa.me/?text="+message,"_blank");
+}
+
+render();
+</script>
+</body>
+</html>
